@@ -7,6 +7,6 @@ This script creates a file called tehran-time in your home directory, which cont
 # How to use
 Save this modified script to a file, e.g. tehran-time.sh
 
-and make it executable using the command chmod +x ctehran-time.sh
+and make it executable using the command chmod +x tehran-time.sh
 
 You can then run the script using the command ./tehran-time.sh
