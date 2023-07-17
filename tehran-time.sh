@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# create file for Tehran time zone configuration
+# Create file for Tehran time zone configuration
 cd ~
 sudo touch tehran-time
 sudo chmod 666 tehran-time
 
-# add configuration
+# Add configuration
 cat <<EOF | sudo tee -a tehran-time
 # Zone  NAME          GMTOFF  RULES FORMAT [UNTIL]
 Zone    Tehran-nodst  3:25:44 -     LMT    1916
@@ -15,27 +15,30 @@ Zone    Tehran-nodst  3:25:44 -     LMT    1916
                       3:30    -     IRST
 EOF
 
-# create timezone configuration
+# Create timezone configuration
 sudo zic -d . tehran-time
 
-# copy configuration to system timezone folder
+# Copy configuration to system timezone folder
 sudo cp Tehran-nodst /usr/share/zoneinfo/Asia/
 
-# backup current timezone configuration
+# Backup current timezone configuration
 sudo mv /etc/localtime /etc/localtime.backup
 
-# create symbolic link to new timezone configuration
+# Create symbolic link to new timezone configuration
 sudo ln -s /usr/share/zoneinfo/Asia/Tehran-nodst /etc/localtime
 
-# remove temporary file
+# Remove temporary file
 sudo rm tehran-time
 
-# prompt for NTP server address
+# Prompt for NTP server address
 echo "Enter NTP server address (e.g. pool.ntp.org): "
-read ntp_server
+read ntp_server1
+echo "Enter NTP server address (e.g. pool.ntp.org): "
+read ntp_server2
 
-# add NTP server to timesyncd.conf
-sudo sed -i "s/#NTP=/NTP=$ntp_server/" /etc/systemd/timesyncd.conf
+# Add NTP server to timesyncd.conf
+sudo sed -i "s/#NTP=/NTP=$ntp_server1/" /etc/systemd/timesyncd.conf
+sudo sed -i "s/#NTP=/NTP=$ntp_server2/" /etc/systemd/timesyncd.conf
 
-# restart timesyncd service
+# Restart timesyncd service
 sudo systemctl restart systemd-timesyncd.service
